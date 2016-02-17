@@ -21,20 +21,21 @@
  *						
  */
 void transferFileToSerialPort(int file_fd, int port_num, int ms){
-	char c;
+	char c; unsigned char readByte;
 	while( read(file_fd, &c, 1) == 1 ){
 		RS232_SendByte(port_num, c);			
-		printf("%c", c); fflush(stdout); //may need to comment this out, since sys.call add delay too
+		if( RS232_PollComport(port_num, &readByte, 1) == 1)
+			printf("%c", readByte, readByte); fflush(stdout); //may need to comment this out, since sys.call add delay too
 		usleep(ms*1000); //may need to add delay here, will test that
 	}
-	printf("End of file transfer\n");
+	printf("\n**End of file transfer**\n");
 }
 
 
 int main(int argc, char* argv[]){
 	//const char port[] = "/dev/ttyACM0";
 	char mode[] = "8N1";	
-	int baud_rate = 115200;
+	int baud_rate = 9600;//115200;
 	int port_num;
 	int file_fd;
 
@@ -52,7 +53,7 @@ int main(int argc, char* argv[]){
 		return 0;
 	}
 	
-	transferFileToSerialPort(file_fd, port_num, 100);			
+	transferFileToSerialPort(file_fd, port_num, 30);			
 
 	return 0;
 }
