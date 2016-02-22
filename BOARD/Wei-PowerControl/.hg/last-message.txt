@@ -1,0 +1,1 @@
+1)Power down most peripherals except for GPIO for LEDs and UART0 for serial port communication.  2) Can enter sleep mode and be waken by a RTC interrupt every minute after the first 5 seconds
