@@ -4,10 +4,10 @@
 #include "RTC.h"
 DigitalOut leds[] = {DigitalOut(LED1), DigitalOut(LED2), DigitalOut(LED3), DigitalOut(LED4)}; // put each LED object into an array, easier to access
 Serial pc(USBTX, USBRX);
+bool onSerial = true;
 
 void ISR(void){
-    leds[2] = !leds[2];
-    leds[1] = !leds[1];
+		onSerial = !onSerial; 
  }
  
  
@@ -25,13 +25,17 @@ int main() {
     leds[0] = 1;  
     char ch;
     while (true) {
-       if(pc.readable()){
-        ch = pc.getc();
-        pc.putc(ch); 
+			 if(!onSerial){ // if transfering, don't sleep
+				leds[0] = 0; // indication of in sleep
+       	sleep(); 
+			 }
+			 else
+				leds[0] = 1;//indication of not in sleep
+
+			 if(pc.readable()){ //keep reading until in sleep
+       	ch = pc.getc();
+       	pc.putc(ch); 
        }
-       
-       leds[3] = !leds[3];
-       sleep(); 
     }
 }
 
