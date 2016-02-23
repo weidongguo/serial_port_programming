@@ -1,7 +1,7 @@
 echo removing *.bin
-rm /media/weidongguo/disk/*.bin
+rm /media/$USER/disk/*.bin
 echo removed!
 echo copying *.bin to the board
-cp *.bin /media/weidongguo/disk/
+cp *.bin /media/$USER/disk/
 echo copied!
 
